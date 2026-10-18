@@ -33,6 +33,44 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
+/* Mobile menu shows consolidated categories instead of 13+ items */
+const mobileServiceCategories = [
+  {
+    label: "Cooling Services",
+    items: [
+      { href: "/services/ac-repair", label: "AC Repair" },
+      { href: "/services/ac-installation", label: "AC Installation" },
+      { href: "/services/ac-maintenance", label: "AC Maintenance" },
+    ],
+  },
+  {
+    label: "Heating Services",
+    items: [
+      { href: "/services/heating-repair", label: "Heating Repair" },
+      { href: "/services/heating-installation", label: "Heating Installation" },
+      { href: "/services/furnace-repair", label: "Furnace Repair" },
+      { href: "/services/furnace-maintenance", label: "Furnace Maintenance" },
+    ],
+  },
+  {
+    label: "Maintenance & Repair",
+    items: [
+      { href: "/services/hvac-repair", label: "HVAC Repair" },
+      { href: "/services/hvac-maintenance", label: "HVAC Maintenance" },
+      { href: "/services/hvac-replacement", label: "HVAC Replacement" },
+    ],
+  },
+  {
+    label: "Air Quality & More",
+    items: [
+      { href: "/services/thermostat-services", label: "Thermostat Services" },
+      { href: "/services/ductwork-ventilation", label: "Ductwork & Ventilation" },
+      { href: "/services/indoor-air-quality", label: "Indoor Air Quality" },
+      { href: "/services/emergency-hvac-service", label: "Emergency HVAC" },
+    ],
+  },
+];
+
 /*
  * ============================================
  * LOGO IMAGE INSTRUCTIONS:
@@ -319,59 +357,94 @@ export default function Header() {
                 <X size={24} />
               </button>
             </div>
-            {navLinks.map((link) =>
-              link.submenu ? (
-                <div key={link.href}>
-                  <div
+
+            {/* Non-submenu links */}
+            {navLinks.filter(l => !l.submenu).map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                style={{
+                  display: "block",
+                  padding: "1rem 0",
+                  color: "var(--text-dark)",
+                  fontFamily: "var(--font-heading)",
+                  fontWeight: 600,
+                  fontSize: "1.0625rem",
+                  borderBottom: "1px solid var(--gray-border)",
+                  textDecoration: "none",
+                }}
+              >
+                {link.label}
+              </Link>
+            ))}
+
+            {/* Consolidated Services Dropdown */}
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "1rem 0",
+                  borderBottom: "1px solid var(--gray-border)",
+                }}
+              >
+                <Link
+                  href="/services"
+                  onClick={() => setMobileOpen(false)}
+                  style={{
+                    color: "var(--text-dark)",
+                    fontFamily: "var(--font-heading)",
+                    fontWeight: 600,
+                    fontSize: "1.0625rem",
+                    textDecoration: "none",
+                  }}
+                >
+                  Services
+                </Link>
+                <button
+                  onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                  style={{ background: "none", border: "none", cursor: "pointer", padding: "0.25rem" }}
+                >
+                  <ChevronDown
+                    size={18}
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      padding: "1rem 0",
-                      borderBottom: "1px solid var(--gray-border)",
+                      transition: "transform 0.2s",
+                      transform: mobileServicesOpen ? "rotate(180deg)" : "rotate(0)",
+                      color: "var(--gray-text)",
                     }}
-                  >
-                    <Link
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      style={{
-                        color: "var(--text-dark)",
-                        fontFamily: "var(--font-heading)",
-                        fontWeight: 600,
-                        fontSize: "1.0625rem",
-                        textDecoration: "none",
-                      }}
-                    >
-                      {link.label}
-                    </Link>
-                    <button
-                      onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                      style={{ background: "none", border: "none", cursor: "pointer", padding: "0.25rem" }}
-                    >
-                      <ChevronDown
-                        size={18}
+                  />
+                </button>
+              </div>
+              {mobileServicesOpen && (
+                <div style={{ paddingLeft: "0.25rem", background: "var(--gray-bg)", borderRadius: "0.5rem", margin: "0.25rem 0 0.5rem", padding: "0.5rem" }}>
+                  {mobileServiceCategories.map((cat) => (
+                    <div key={cat.label} style={{ marginBottom: "0.75rem" }}>
+                      <div
                         style={{
-                          transition: "transform 0.2s",
-                          transform: mobileServicesOpen ? "rotate(180deg)" : "rotate(0)",
-                          color: "var(--gray-text)",
+                          fontSize: "0.6875rem",
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.08em",
+                          color: "var(--blue)",
+                          padding: "0.375rem 0.5rem 0.25rem",
+                          fontFamily: "var(--font-heading)",
                         }}
-                      />
-                    </button>
-                  </div>
-                  {mobileServicesOpen && (
-                    <div style={{ paddingLeft: "0.5rem", background: "var(--gray-bg)", borderRadius: "0.5rem", margin: "0.25rem 0 0.5rem" }}>
-                      {link.submenu.map((sub) => (
+                      >
+                        {cat.label}
+                      </div>
+                      {cat.items.map((sub) => (
                         <Link
                           key={sub.href}
                           href={sub.href}
                           onClick={() => setMobileOpen(false)}
                           style={{
                             display: "block",
-                            padding: "0.75rem",
+                            padding: "0.5rem 0.5rem 0.5rem 1rem",
                             color: "var(--text-body)",
                             fontSize: "0.875rem",
                             fontWeight: 500,
-                            borderBottom: "1px solid var(--gray-border)",
                             textDecoration: "none",
                           }}
                         >
@@ -379,28 +452,29 @@ export default function Header() {
                         </Link>
                       ))}
                     </div>
-                  )}
+                  ))}
+                  <Link
+                    href="/services"
+                    onClick={() => setMobileOpen(false)}
+                    style={{
+                      display: "block",
+                      padding: "0.625rem 0.5rem",
+                      color: "var(--blue)",
+                      fontSize: "0.875rem",
+                      fontWeight: 700,
+                      fontFamily: "var(--font-heading)",
+                      textDecoration: "none",
+                      borderTop: "1px solid var(--gray-border)",
+                      marginTop: "0.25rem",
+                    }}
+                  >
+                    View All Services →
+                  </Link>
                 </div>
-              ) : (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  style={{
-                    display: "block",
-                    padding: "1rem 0",
-                    color: "var(--text-dark)",
-                    fontFamily: "var(--font-heading)",
-                    fontWeight: 600,
-                    fontSize: "1.0625rem",
-                    borderBottom: "1px solid var(--gray-border)",
-                    textDecoration: "none",
-                  }}
-                >
-                  {link.label}
-                </Link>
-              )
-            )}
+              )}
+            </div>
+
+            {/* CTA Buttons */}
             <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               <a href={`tel:${BUSINESS_PHONE_RAW}`} className="btn-call" style={{ width: "100%", justifyContent: "center" }}>
                 <Phone size={16} />
@@ -408,9 +482,9 @@ export default function Header() {
               </a>
               <Link
                 href="/request-service"
-                className="btn-primary"
+                className="btn-primary drawer-cta-btn"
                 onClick={() => setMobileOpen(false)}
-                style={{ width: "100%", justifyContent: "center" }}
+                style={{ width: "100%", justifyContent: "center", color: "#ffffff" }}
               >
                 Request a Service
               </Link>

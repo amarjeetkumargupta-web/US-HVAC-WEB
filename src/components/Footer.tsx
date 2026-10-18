@@ -32,42 +32,6 @@ export default function Footer() {
         color: "#cbd5e1",
       }}
     >
-      {/* CTA Banner */}
-      <div
-        style={{
-          background: "linear-gradient(135deg, var(--blue) 0%, #1258A0 100%)",
-          padding: "2rem 1rem",
-          textAlign: "center",
-        }}
-      >
-        <div className="container" style={{ maxWidth: "600px" }}>
-          <h2
-            style={{
-              fontFamily: "var(--font-heading)",
-              fontSize: "clamp(1.25rem, 3vw, 1.75rem)",
-              fontWeight: 800,
-              color: "white",
-              marginBottom: "0.5rem",
-            }}
-          >
-            Ready for Reliable HVAC Service?
-          </h2>
-          <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "0.9375rem", marginBottom: "1.5rem" }}>
-            Call us or submit a service request — we&apos;re here to help.
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", alignItems: "center" }}>
-            <a href={`tel:${BUSINESS_PHONE_RAW}`} className="btn-call" style={{ width: "100%", maxWidth: "280px" }}>
-              <Phone size={16} />
-              {BUSINESS_PHONE}
-            </a>
-            <Link href="/request-service" className="btn-secondary" style={{ width: "100%", maxWidth: "280px" }}>
-              Request a Service
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </div>
-
       {/* Footer Content */}
       <div className="container" style={{ padding: "2.5rem 1rem" }}>
         <div className="footer-grid">

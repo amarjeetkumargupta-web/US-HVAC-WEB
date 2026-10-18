@@ -100,20 +100,67 @@ export default function AboutPage() {
           <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 800, marginBottom: "1.25rem" }}>
             Who We Are
           </h2>
-          <p style={{ fontSize: "1.0625rem", lineHeight: 1.8, marginBottom: "1rem" }}>
+          <p style={{ fontSize: "1.0625rem", lineHeight: 1.8, marginBottom: "1.5rem" }}>
             {BUSINESS_NAME} is a heating, ventilation, and air conditioning
             company serving homeowners in Dayton, Ohio and surrounding
             communities. We provide a complete range of HVAC services — from
             routine maintenance and repair to new system installation and
             emergency response.
           </p>
+
+          {/* Visual break — key highlights */}
+          <div
+            style={{
+              background: "var(--blue-light)",
+              borderRadius: "0.75rem",
+              padding: "1.5rem 2rem",
+              marginBottom: "1.5rem",
+              border: "1px solid #bfdbf7",
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 700,
+                fontSize: "1rem",
+                marginBottom: "0.75rem",
+                color: "var(--text-dark)",
+              }}
+            >
+              What sets us apart:
+            </p>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              {[
+                "Accurate diagnostics before recommending solutions",
+                "Honest pricing — no hidden fees or surprise charges",
+                "We recommend repair when it makes sense, not replacement",
+                "Local team that understands Dayton's climate challenges",
+              ].map((item, i) => (
+                <li
+                  key={i}
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "0.5rem",
+                    fontSize: "0.9375rem",
+                    lineHeight: 1.6,
+                    color: "var(--text-body)",
+                  }}
+                >
+                  <CheckCircle
+                    size={16}
+                    style={{ color: "var(--blue)", marginTop: "0.25rem", flexShrink: 0 }}
+                  />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
           <p style={{ fontSize: "1.0625rem", lineHeight: 1.8, marginBottom: "1rem" }}>
             Our approach is straightforward: diagnose the problem accurately,
             explain the options honestly, and do the work right. We don&apos;t
-            believe in pressure tactics or unnecessary upsells. When a simple
-            repair will solve the problem, that&apos;s what we recommend. When
-            replacement is the more practical path, we&apos;ll explain why and
-            help you weigh your options.
+            believe in pressure tactics or unnecessary upsells.
           </p>
           <p style={{ fontSize: "1.0625rem", lineHeight: 1.8 }}>
             We understand that HVAC work involves trust — we&apos;re working on

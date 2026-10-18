@@ -79,9 +79,9 @@ export const services: ServiceData[] = [
     ],
     relatedServices: [
       "hvac-maintenance",
-      "ac-repair",
-      "heating-repair",
       "hvac-replacement",
+      "indoor-air-quality",
+      "thermostat-services",
     ],
     faqs: [
       {

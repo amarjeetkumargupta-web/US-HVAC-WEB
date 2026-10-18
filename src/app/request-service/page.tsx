@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Phone,
@@ -30,6 +30,7 @@ export default function RequestServicePage() {
     "idle" | "loading" | "success" | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const {
     register,
@@ -47,6 +48,24 @@ export default function RequestServicePage() {
       details: "",
     },
   });
+
+  /* Phone auto-formatting: (XXX) XXX-XXXX */
+  const formatPhoneNumber = (value: string) => {
+    let digits = value.replace(/\D/g, "");
+    if (digits.length === 11 && digits.startsWith("1")) {
+      digits = digits.slice(1);
+    }
+    digits = digits.slice(0, 10);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setValue("phone", formatted, { shouldValidate: true });
+    e.target.value = formatted;
+  };
 
   const toggleService = (serviceName: string) => {
     setSelectedServices((prev) => {
@@ -81,6 +100,7 @@ export default function RequestServicePage() {
 
       if (res.ok && result.success) {
         setSubmitStatus("success");
+        setShowSuccessModal(true);
         reset();
         setSelectedServices([]);
       } else {
@@ -97,37 +117,48 @@ export default function RequestServicePage() {
     }
   };
 
-  if (submitStatus === "success") {
-    return (
-      <>
-        <section className="hero-section" style={{ paddingBottom: "2rem" }}>
-          <div className="container" style={{ maxWidth: "800px" }}>
-            <nav
-              className="breadcrumbs"
-              style={{ color: "rgba(255,255,255,0.6)", marginBottom: "1rem" }}
-            >
-              <Link href="/" style={{ color: "rgba(255,255,255,0.6)" }}>Home</Link>
-              <span className="separator">/</span>
-              <span style={{ color: "rgba(255,255,255,0.9)" }}>Request a Service</span>
-            </nav>
-            <h1
-              style={{
-                fontFamily: "var(--font-heading)",
-                fontSize: "clamp(2rem, 4vw, 3rem)",
-                fontWeight: 900,
-                color: "white",
-              }}
-            >
-              Request a Service
-            </h1>
-          </div>
-        </section>
-        <section className="section">
+  /* Lock body scroll when success modal is open */
+  useEffect(() => {
+    if (showSuccessModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [showSuccessModal]);
+
+  return (
+    <>
+      {/* Success Modal Overlay */}
+      {showSuccessModal && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "rgba(16, 36, 58, 0.7)",
+            backdropFilter: "blur(4px)",
+            padding: "1rem",
+          }}
+          onClick={() => {
+            setShowSuccessModal(false);
+            setSubmitStatus("idle");
+          }}
+        >
           <div
-            className="container"
+            onClick={(e) => e.stopPropagation()}
             style={{
-              maxWidth: "600px",
+              background: "var(--white)",
+              borderRadius: "1rem",
+              padding: "2.5rem 2rem",
+              maxWidth: "480px",
+              width: "100%",
               textAlign: "center",
+              boxShadow: "0 20px 60px rgba(16,36,58,0.25)",
+              animation: "fadeInUp 0.4s ease-out",
             }}
           >
             <div
@@ -146,12 +177,13 @@ export default function RequestServicePage() {
             </div>
             <h2
               style={{
-                fontSize: "1.75rem",
+                fontFamily: "var(--font-heading)",
+                fontSize: "1.5rem",
                 fontWeight: 800,
                 marginBottom: "0.75rem",
               }}
             >
-              Request Submitted Successfully!
+              Thank You!
             </h2>
             <p
               style={{
@@ -161,15 +193,14 @@ export default function RequestServicePage() {
                 marginBottom: "2rem",
               }}
             >
-              Thank you for contacting Armada HVAC. We&apos;ve received your
-              service request and will follow up with you as soon as possible.
-              For immediate assistance, please call us directly.
+              We have received your request and will contact you shortly.
+              For immediate assistance, call us directly.
             </p>
             <div
               style={{
                 display: "flex",
                 flexWrap: "wrap",
-                gap: "1rem",
+                gap: "0.75rem",
                 justifyContent: "center",
               }}
             >
@@ -177,18 +208,20 @@ export default function RequestServicePage() {
                 <Phone size={16} />
                 {BUSINESS_PHONE}
               </a>
-              <Link href="/" className="btn-outline">
-                Return to Home
-              </Link>
+              <button
+                onClick={() => {
+                  setShowSuccessModal(false);
+                  setSubmitStatus("idle");
+                }}
+                className="btn-outline"
+              >
+                Close
+              </button>
             </div>
           </div>
-        </section>
-      </>
-    );
-  }
+        </div>
+      )}
 
-  return (
-    <>
       {/* Hero */}
       <section className="hero-section" style={{ paddingBottom: "2rem" }}>
         <div
@@ -272,7 +305,9 @@ export default function RequestServicePage() {
                   type="tel"
                   className={`form-input ${errors.phone ? "error" : ""}`}
                   placeholder="(555) 123-4567"
-                  {...register("phone")}
+                  {...register("phone", {
+                    onChange: handlePhoneChange,
+                  })}
                 />
                 {errors.phone && (
                   <p className="form-error">{errors.phone.message}</p>

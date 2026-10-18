@@ -203,8 +203,8 @@ export default function ServiceAreaPage() {
               marginBottom: "2rem",
             }}
           >
-            All 14 of our HVAC services are available throughout our service
-            area.
+            Our complete range of HVAC services is available throughout our
+            service area.
           </p>
           <div className="services-checklist-grid">
             {[
@@ -229,11 +229,11 @@ export default function ServiceAreaPage() {
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
-                  padding: "0.75rem 1rem",
+                  padding: "0.625rem 0.75rem",
                   background: "var(--white)",
                   borderRadius: "0.5rem",
                   border: "1px solid var(--gray-border)",
-                  fontSize: "0.9375rem",
+                  fontSize: "0.875rem",
                   fontWeight: 500,
                 }}
               >

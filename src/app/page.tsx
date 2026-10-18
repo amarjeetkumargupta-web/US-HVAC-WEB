@@ -234,7 +234,7 @@ export default function HomePage() {
           <div className="hero-stats-row" style={{ color: "rgba(255,255,255,0.7)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.375rem" }}>
               <CheckCircle size={16} style={{ color: "#F59E0B" }} />
-              14 HVAC Services
+              Complete HVAC Solutions
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.375rem" }}>
               <CheckCircle size={16} style={{ color: "#F59E0B" }} />
@@ -321,7 +321,7 @@ export default function HomePage() {
           </div>
           <div style={{ textAlign: "center", marginTop: "2rem" }}>
             <Link href="/services" className="btn-outline">
-              View All 14 Services
+              View All Services
               <ArrowRight size={14} />
             </Link>
           </div>
@@ -442,7 +442,7 @@ export default function HomePage() {
               }}
             >
               {[
-                { num: "14", label: "HVAC Services" },
+                { num: "Full-Service", label: "Heating & Cooling" },
                 { num: "13+", label: "Communities Served" },
                 { num: "24/7", label: "Phone Availability" },
               ].map((stat) => (
